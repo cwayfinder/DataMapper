@@ -1,37 +1,18 @@
+$LOAD_PATH.unshift File.expand_path('../', __FILE__)
+
 require 'rubygems'
+
 require 'data_mapper' # requires all the gems listed above
 require 'dm-sqlite-adapter' # requires all the gems listed above
-
-# If you want the logs displayed you have to do this before the call to setup
-DataMapper::Logger.new($stdout, :debug)
-
-# An in-memory Sqlite3 connection:
-DataMapper.setup(:default, 'sqlite::memory:')
-
-
-class User
-  include DataMapper::Resource
-
-  property :id, Serial # An auto-increment integer key
-  property :name, String # A varchar type string, for short strings
-  property :password, String # A varchar type string, for short strings
-
-  has n, :visits
-end
-
-class Visit
-  include DataMapper::Resource
-
-  property :id, Serial # An auto-increment integer key
-  property :created_at, DateTime # A DateTime, for any date you might like.
-
-  belongs_to :user
-end
-
-DataMapper.finalize
-
-
 require 'dm-migrations'
+
+require 'models/user'
+require 'models/visit'
+
+
+DataMapper::Logger.new($stdout, :debug)    # If you want the logs displayed you have to do this before the call to setup
+DataMapper.setup(:default, 'sqlite::memory:')    # An in-memory Sqlite3 connection:
+DataMapper.finalize
 DataMapper.auto_migrate!
 #DataMapper.auto_upgrade!
 
