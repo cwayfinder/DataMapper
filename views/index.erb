@@ -1,0 +1,7 @@
+Hello <%=user[:name]%>.<br />
+You have been here <%=user.visits.count%> time(s) previously.<br /><br />
+
+History:<br />
+<% user.visits.each do |visit| %>
+    <%= visit[:created_at].to_time %><br />
+<% end %>
