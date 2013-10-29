@@ -64,6 +64,12 @@ post '/registration' do
   else
     user = User.new(:name => params[:name], :password => params[:password])
     user.save
+
+    visit = Visit.new(:created_at => Time.now)
+    visit.save
+    user.visits << visit
+    user.save
+
     session['user_name'] = user.name
     redirect '/'
   end
@@ -71,5 +77,5 @@ end
 
 get '/logout' do
   session.delete(:user_name)
-  redirect '/'
+  redirect '/login'
 end

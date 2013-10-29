@@ -1,9 +1,11 @@
-Hello <%=user[:name]%>.<br />
-You have been here <%=user.visits.count%> time(s) previously.<br /><br />
+Hello <%= user[:name] %>.<br/>
+You have been here <%= user.visits.count %> time(s) previously.<br/><br/>
 
-<a href="/logout">Logout</a><br /><br />
+<a href="/logout">Logout</a><br/><br/>
 
-History:<br />
-<% user.visits.each do |visit| %>
-    <%= visit[:created_at].to_time %><br />
-<% end %>
+History:<br/>
+<ol>
+  <% user.visits.each do |visit| %>
+      <li><%= visit[:created_at].to_time %></li>
+  <% end %>
+</ol>
