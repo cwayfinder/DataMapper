@@ -68,3 +68,8 @@ post '/registration' do
     redirect '/'
   end
 end
+
+get '/logout' do
+  session.delete(:user_name)
+  redirect '/'
+end
