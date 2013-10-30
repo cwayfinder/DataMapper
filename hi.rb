@@ -22,6 +22,15 @@ require "sinatra/reloader"
 
 enable :sessions
 
+helpers do
+  def create_visit(user)
+    visit = Visit.new(:created_at => Time.now)
+    visit.save
+    user.visits << visit
+    user.save
+  end
+end
+
 get '/' do
   if session['user_name']
     user = User.first(:name => session['user_name'])
@@ -42,11 +51,7 @@ end
 post '/login' do
   user = User.first(:name => params[:name], :password => params[:password])
   if user
-    visit = Visit.new(:created_at => Time.now)
-    visit.save
-    user.visits << visit
-    user.save
-
+    create_visit(user)
     session['user_name'] = user.name
     redirect '/'
   else
@@ -65,10 +70,7 @@ post '/registration' do
     user = User.new(:name => params[:name], :password => params[:password])
     user.save
 
-    visit = Visit.new(:created_at => Time.now)
-    visit.save
-    user.visits << visit
-    user.save
+    create_visit(user)
 
     session['user_name'] = user.name
     redirect '/'
