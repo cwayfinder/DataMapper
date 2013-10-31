@@ -7,3 +7,4 @@ gem "dm-sqlite-adapter"
 
 gem "sinatra"
 gem "sinatra-contrib"
+gem "sinatra-flash"

@@ -19,6 +19,7 @@ DataMapper.auto_migrate!
 
 require 'sinatra'
 require "sinatra/reloader"
+require 'sinatra/flash'
 
 enable :sessions
 
@@ -37,7 +38,7 @@ get '/' do
     if user
       erb :index, :locals => { :user => user }
     else
-      "User with name \"#{session['user_name']}\" not found."
+      "Some kind of shit has happened. User with name \"#{session['user_name']}\" not found."
     end
   else
     redirect '/login'
@@ -55,7 +56,8 @@ post '/login' do
     session['user_name'] = user.name
     redirect '/'
   else
-    'Invalid credentials'
+    flash[:error] = 'Invalid credentials'
+    redirect '/login'
   end
 end
 
@@ -65,7 +67,8 @@ end
 
 post '/registration' do
   if User.first(:name => params[:name])
-    'User with such name already registered'
+    flash[:error] = 'User with such name already registered'
+    redirect '/registration'
   else
     user = User.new(:name => params[:name], :password => params[:password])
     user.save

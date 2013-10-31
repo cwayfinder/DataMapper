@@ -1,5 +1,9 @@
 <h1>Registration</h1>
 
+<% if flash[:error] %>
+    <span style="color:#ff440a;"><%= flash[:error] %></span><br />
+<% end %>
+
 <form action="/registration" method="POST">
 
   <label>
