@@ -1,0 +1,3 @@
+require './hi'
+
+run MyApp
