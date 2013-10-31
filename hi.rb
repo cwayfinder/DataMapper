@@ -25,10 +25,11 @@ enable :sessions
 
 helpers do
   def create_visit(user)
-    visit = Visit.new(:created_at => Time.now)
-    visit.save
-    user.visits << visit
+    user.visits.new(:created_at => Time.now)
     user.save
+
+    session['user_name'] = user.name
+    redirect '/'
   end
 end
 
@@ -53,8 +54,6 @@ post '/login' do
   user = User.first(:name => params[:name], :password => params[:password])
   if user
     create_visit(user)
-    session['user_name'] = user.name
-    redirect '/'
   else
     flash[:error] = 'Invalid credentials'
     redirect '/login'
@@ -71,12 +70,7 @@ post '/registration' do
     redirect '/registration'
   else
     user = User.new(:name => params[:name], :password => params[:password])
-    user.save
-
     create_visit(user)
-
-    session['user_name'] = user.name
-    redirect '/'
   end
 end
 
